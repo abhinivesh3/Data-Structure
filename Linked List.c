@@ -147,6 +147,61 @@ struct Node* LSearch(struct Node *p,int key){
     }
     return q;
 }
+
+void Insert(struct Node *p,int index,int x){
+    struct Node *t;
+    if(index<0 || index>Count(p)){
+        return ;
+    }
+    t=(struct Node *)malloc(sizeof(struct Node));
+    t->data=x;
+    if(index==0){
+        t->next=first;
+        first=t;
+    }
+    else{
+        for(int i=0;i<index-1;i++){
+            p=p->next;
+        }
+        t->next=p->next;
+        p->next=t;
+    }
+}
+
+//Insert sorting element in Linked List
+void SortInsert(struct Node *p,int x){
+    struct Node *t,*q=NULL;
+    t=(struct Node*)malloc(sizeof(struct Node));
+    t->data=x;
+    t->next=NULL;
+    if(first==NULL){
+        first=t;
+    }
+    else{
+        while(p && p->data<x){
+            q=p;
+            p=p->next;
+        }
+        if(p==first){
+            t->next=first;
+            first=t;
+        }
+        else{
+            t->next=q->next;
+            q->next=t;
+        }
+    }
+}
+
+//delete element in given index in linked list
+int Delete(struct Node *p,int index){
+    struct Node *q;
+    int x=-1;
+    if(index<1 || index>Count(p)){
+        return -1;
+    }
+}
+
 //main function
 int main(){
     int a[]={3,6,8,20,7,16};
@@ -164,5 +219,16 @@ int main(){
     printf("\nSearch element in Linked List : %d",Search(first,pos));
     printf("\nRecurive Search element in Linked List : %d",Rsearch(first,pos));
     printf("\nLinear Search element in Linked List : %d",LSearch(first,pos));
+    int index,value;
+    scanf("\n%d %d",&index,&value);
+    Insert(first,index,value);
+    printf("\nInsert element to linked list : ",Display(first));
+    scanf("\n%d",&value);
+    SortInsert(first,value);
+    printf("\nInsert sorting in Linked list : ")
+    Display(first);
+    scanf("\n%d",&index);
+    printf("\nDelete element in Linked List : %d ", Delete(first,index));
+    Display(first);
 
 }
