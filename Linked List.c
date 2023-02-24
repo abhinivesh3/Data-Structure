@@ -200,8 +200,93 @@ int Delete(struct Node *p,int index){
     if(index<1 || index>Count(p)){
         return -1;
     }
+    if(index==1){
+        q=first;
+        x=first->data;
+        first=first->next;
+        free(q);
+        return x;
+    }
+    else{
+        for(int i=0;i<index-1;i++){
+            q=p;
+            p=p->next;
+        }
+        q->next=p->next;
+        x=p->data;
+        free(p);
+        return x;
+    }
 }
 
+//Linked list is sorted or not 
+int isSorted(struct Node *p){
+    int x=-65536;
+    while(p!=NULL){
+        if(p->data<x){
+            return 0;
+        }
+        x=p->data;
+        p=p->next;
+    }
+    return 1;
+}
+
+///remove duplicates from sorted Linked list
+void RemoveDuplicate(struct Node *p){
+    struct Node *q=p->next;
+    while(q!=NULL){
+        if(p->data!=q->data){
+            p=q;
+            q=q->next;
+        }
+        else{
+            p->next=q->next;
+            free(q);
+            q=p->next;
+        }
+    }
+}
+
+//Reverse element in linked list
+void Reverse(struct Node *p){
+    int *A,i=0;
+    struct Node *q;
+    A=(int*)malloc(sizeof(int)*count(p));
+    while(q!=NULL){
+        A[i]=q->data;
+        q=q->next;
+        i++;
+    }
+    q=p;
+    i--;
+    while(q!=NULL){
+        q->data=A[i];
+        q=q->next;
+        i--;
+    }
+}
+
+void Reverse2(struct Node *p){
+    struct Node *q=NULL,*r=NULL;
+    while(p!=NULL){
+        r=q;
+        q=p;
+        p=p->next;
+        q->next=r;
+    }
+    first=q;
+}
+
+void Reverse3(struct Node *q,struct Node *p){
+    if(p){
+        Reverse3(p,p->next);
+        p->next=q;
+    }
+    else{
+        first=q;
+    }
+}
 //main function
 int main(){
     int a[]={3,6,8,20,7,16};
@@ -222,13 +307,22 @@ int main(){
     int index,value;
     scanf("\n%d %d",&index,&value);
     Insert(first,index,value);
-    printf("\nInsert element to linked list : ",Display(first));
+    printf("\nInsert element to linked list : ");
+    Display(first);
     scanf("\n%d",&value);
     SortInsert(first,value);
-    printf("\nInsert sorting in Linked list : ")
-    Display(first);
+    printf("\nInsert sorting in Linked list : ");
     scanf("\n%d",&index);
     printf("\nDelete element in Linked List : %d ", Delete(first,index));
     Display(first);
-
+    if(isSorted(first)==1){
+        printf("\nLinked List is sorted ");
+    }
+    else{
+        printf("\nLinked List is not sorted");
+    }
+    RemoveDuplicate(first);
+    Reverse(first);
+    Reverse2(first);
+    Reverse3(first,first)
 }
